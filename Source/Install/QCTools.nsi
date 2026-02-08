@@ -27,6 +27,11 @@ SetCompressor /FINAL /SOLID lzma
 !include FileFunc.nsh
 !include WinVer.nsh
 
+; Uninstaller signing
+!ifdef EXPORT_UNINST
+  !uninstfinalize 'copy /Y "%1" "../../Release/${PRODUCT_NAME}_${PRODUCT_VERSION}_Windows-uninst.exe"'
+!endif
+
 ; Modern UI
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
@@ -65,7 +70,7 @@ BrandingText " "
 ; Modern UI end
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\..\${PRODUCT_NAME}_${PRODUCT_VERSION}_Windows.exe"
+OutFile "..\..\Release\${PRODUCT_NAME}_${PRODUCT_VERSION}_Windows.exe"
 InstallDir "$PROGRAMFILES64\${PRODUCT_NAME}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails nevershow
@@ -156,7 +161,11 @@ Section "SectionPrincipale" SEC01
 SectionEnd
 
 Section -Post
-  WriteUninstaller "$INSTDIR\uninst.exe"
+  !if /FileExists "..\..\Release\${PRODUCT_NAME}_${PRODUCT_VERSION}_Windows-uninst.exe"
+    File "/oname=$INSTDIR\uninst.exe" "..\..\Release\${PRODUCT_NAME}_${PRODUCT_VERSION}_Windows-uninst.exe"
+  !else
+    WriteUninstaller "$INSTDIR\uninst.exe"
+  !endif
   WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\QCTools.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName"     "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher"       "${PRODUCT_PUBLISHER}"
