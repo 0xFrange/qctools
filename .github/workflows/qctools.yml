@@ -1,6 +1,9 @@
 name: qctools
 
-on: [push, pull_request]
+on:
+  push: {}
+  pull_request: {}
+  workflow_dispatch: {}
 
 jobs:
 
@@ -10,9 +13,9 @@ jobs:
       matrix:
         compiler: ['clang-9']
         include:
-          - compiler: clang-9
-            packages: llvm@15
-            env: { 'CC': 'clang', 'CXX': 'clang++' }
+        - compiler: clang-9
+          packages: llvm@15
+          env: {'CC': 'clang', 'CXX': 'clang++'}
 
     runs-on: macos-latest
 
@@ -69,9 +72,10 @@ jobs:
       matrix:
         compiler: ['clang-9']
         include:
-          - compiler: clang-9
-            packages: llvm@15
-            env: { 'CC': 'clang', 'CXX': 'clang++', 'HOMEBREW_NO_INSTALL_CLEANUP': '1', 'HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK': '1' }
+        - compiler: clang-9
+          packages: llvm@15
+          env: {'CC': 'clang', 'CXX': 'clang++', 'HOMEBREW_NO_INSTALL_CLEANUP': '1',
+            'HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK': '1'}
 
     runs-on: macos-latest
 
@@ -125,10 +129,10 @@ jobs:
       matrix:
         compiler: ['clang-9']
         include:
-          - compiler: clang-9
-            packages: llvm@15
-            env: { 'CC': 'clang', 'CXX': 'clang++' }
-          - qt_version: "5.15.*"
+        - compiler: clang-9
+          packages: llvm@15
+          env: {'CC': 'clang', 'CXX': 'clang++'}
+        - qt_version: "5.15.*"
 
     runs-on: macos-latest
 
@@ -210,11 +214,12 @@ jobs:
       matrix:
         compiler: ['clang-9']
         include:
-          - compiler: clang-9
-            packages: llvm@15
-            env: { 'CC': 'clang', 'CXX': 'clang++', 'HOMEBREW_NO_INSTALL_CLEANUP': '1', 'HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK': '1' }
-          - qt_version: "6.5.*"
-            qt_modules: "qtmultimedia"
+        - compiler: clang-9
+          packages: llvm@15
+          env: {'CC': 'clang', 'CXX': 'clang++', 'HOMEBREW_NO_INSTALL_CLEANUP': '1',
+            'HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK': '1'}
+        - qt_version: "6.5.*"
+          qt_modules: "qtmultimedia"
 
     runs-on: macos-latest
 
@@ -288,11 +293,11 @@ jobs:
       matrix:
         compiler: ['gcc-9']
         include:
-          - compiler: gcc-9
-            packages: gcc-9 g++-9 libbz2-dev
-            env: { 'CC': 'gcc-9', 'CXX': 'g++-9' }
-          - qt_version: "5.15.*"
-            qt_packages: "libxkbcommon-dev libgstreamer-plugins-base1.0-0 libgstreamer-gl1.0-0"
+        - compiler: gcc-9
+          packages: gcc-9 g++-9 libbz2-dev
+          env: {'CC': 'gcc-9', 'CXX': 'g++-9'}
+        - qt_version: "5.15.*"
+          qt_packages: "libxkbcommon-dev libgstreamer-plugins-base1.0-0 libgstreamer-gl1.0-0"
 
     runs-on: ubuntu-latest
 
@@ -370,12 +375,12 @@ jobs:
       matrix:
         compiler: ['gcc-9']
         include:
-          - compiler: gcc-9
-            packages: gcc-9 g++-9 libbz2-dev
-            env: { 'CC': 'gcc-9', 'CXX': 'g++-9' }
-          - qt_version: "6.5.*"
-            qt_modules: "qtmultimedia qt5compat"
-            qt_packages: "libxkbcommon-dev libgstreamer-plugins-base1.0-0 libgstreamer-gl1.0-0"
+        - compiler: gcc-9
+          packages: gcc-9 g++-9 libbz2-dev
+          env: {'CC': 'gcc-9', 'CXX': 'g++-9'}
+        - qt_version: "6.5.*"
+          qt_modules: "qtmultimedia qt5compat"
+          qt_packages: "libxkbcommon-dev libgstreamer-plugins-base1.0-0 libgstreamer-gl1.0-0"
 
     runs-on: ubuntu-latest
 
@@ -533,8 +538,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - qt_version: "6.3.0"
-            qt_modules: "qtmultimedia qt5compat"
+        - qt_version: "6.3.0"
+          qt_modules: "qtmultimedia qt5compat"
 
     runs-on: windows-latest
 
@@ -699,8 +704,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - qt_version: "6.3.0"
-            qt_modules: "qtmultimedia qt5compat"
+        - qt_version: "6.3.0"
+          qt_modules: "qtmultimedia qt5compat"
 
     runs-on: windows-latest
 
@@ -777,6 +782,6 @@ jobs:
 
     - name: Build QCTools
       shell: cmd
-      run: |
+      run: |-
         cd Project/QtCreator
         nmake
